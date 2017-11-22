@@ -16,7 +16,7 @@ public class Generator : MonoBehaviour {
 		
 	}
 
-    void generateNextTetromino()
+    public void generateNextTetromino()
     {
         int random = Random.Range(0, tetrominos.Count);
 
