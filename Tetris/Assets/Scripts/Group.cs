@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Group : MonoBehaviour {
 
+    private const float blockSize = 0.65f;
+
     bool checkForValidGridPosition()
     {
         foreach (Transform block in transform)
@@ -54,26 +56,26 @@ public class Group : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            transform.position += new Vector3(-1, 0, 0);
+            transform.position += new Vector3(-blockSize, 0, 0);
             if (checkForValidGridPosition())
             {
                 drawGrid();
             }
             else
             {
-                transform.position += new Vector3(1, 0, 0);
+                transform.position += new Vector3(blockSize, 0, 0);
             }
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            transform.position += new Vector3(1, 0, 0);
+            transform.position += new Vector3(blockSize, 0, 0);
             if (checkForValidGridPosition())
             {
                 drawGrid();
             }
             else
             {
-                transform.position += new Vector3(1, 0, 0);
+                transform.position += new Vector3(-blockSize, 0, 0);
             }
         }
         else if (Input.GetKeyDown(KeyCode.O))
@@ -103,14 +105,14 @@ public class Group : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            transform.position += new Vector3(0, -1, 0);
+            transform.position += new Vector3(0, -blockSize, 0);
             if (checkForValidGridPosition())
             {
                 drawGrid();
             }
             else
             {
-                transform.position += new Vector3(0, 1, 0);
+                transform.position += new Vector3(0, blockSize, 0);
                 Grid.removeFullRows();
                 GameObject.FindObjectOfType<Generator>().generateNextTetromino();
                 enabled = false;
