@@ -171,6 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eecd9e290f6d79d47acc8f03246b0870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropTime: 0.75
+  gameOverString: Game over!
 --- !u!212 &212128716698544900
 SpriteRenderer:
   m_ObjectHideFlags: 1

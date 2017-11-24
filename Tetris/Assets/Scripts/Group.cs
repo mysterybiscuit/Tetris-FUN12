@@ -4,7 +4,24 @@ using UnityEngine;
 
 public class Group : MonoBehaviour {
 
-    private const float blockSize = 0.65f;
+    const float blockSize = 0.65f;
+
+    float mostRecentFall = 0f;
+
+    float lastDrop = 0f;
+
+    public float dropTime = 1f;
+
+    public string gameOverString = "Game over!";
+
+    void Start()
+    {
+        if (!checkForValidGridPosition())
+        {
+            Debug.Log(gameOverString);
+            Destroy(gameObject);
+        }
+    }
 
     bool checkForValidGridPosition()
     {
@@ -46,11 +63,6 @@ public class Group : MonoBehaviour {
             Grid.grid[(int)vector.x, (int)vector.y] = block;
         }
     }
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -103,7 +115,7 @@ public class Group : MonoBehaviour {
                 transform.Rotate(0, 0, -90);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastDrop >= dropTime)
         {
             transform.position += new Vector3(0, -blockSize, 0);
             if (checkForValidGridPosition())
@@ -117,6 +129,9 @@ public class Group : MonoBehaviour {
                 GameObject.FindObjectOfType<Generator>().generateNextTetromino();
                 enabled = false;
             }
+            lastDrop = Time.time;
         }
 	}
+
+    
 }
