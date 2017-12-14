@@ -4,4 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/game.unity
+    guid: 9a78db16b4a56e941bc3d9617c989d0e
+  - enabled: 1
+    path: Assets/Scenes/scoreinsert.unity
+    guid: 1fd48d164f800d14894305d7370dc486
+  - enabled: 1
+    path: Assets/Scenes/highscore.unity
+    guid: 277fa9553fb36dd4a857b5191b40441d

@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class Group : MonoBehaviour {
 
-    const float blockSize = 0.65f;
+    public float blockSize = 0.65f;
 
     float mostRecentFall = 0f;
 
     float lastDrop = 0f;
 
-    public float dropTime = 1f;
+    public float dropTime = 0.75f;
 
     public string gameOverString = "Game over!";
+
+    public GameObject test;
+
+    public GameObject[] toDestroy;
 
     void Start()
     {
@@ -53,14 +57,23 @@ public class Group : MonoBehaviour {
                     {
                         Grid.grid[x, y] = null;
                     }
+                    
                 }
             }
         }
 
         foreach (Transform block in transform)
         {
+
+            foreach (GameObject erase in toDestroy)
+            {
+                Destroy(erase);
+            }
+            toDestroy = GameObject.FindGameObjectsWithTag("test");
             Vector2 vector = Grid.roundOff(block.position);
             Grid.grid[(int)vector.x, (int)vector.y] = block;
+            Instantiate(test, block.position, Quaternion.identity);
+
         }
     }
 	

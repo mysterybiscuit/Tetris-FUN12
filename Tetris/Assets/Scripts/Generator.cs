@@ -19,7 +19,6 @@ public class Generator : MonoBehaviour {
     public void generateNextTetromino()
     {
         int random = Random.Range(0, tetrominos.Count);
-
         Instantiate(tetrominos[random], transform.position, Quaternion.identity);
         //Generates tetromino at the spawn position with default rotation.
 
