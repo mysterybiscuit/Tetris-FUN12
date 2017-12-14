@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Grid = UnityEngine.Grid;
 
 public class Group : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class Group : MonoBehaviour
 
     float lastDrop = 0f;
 
-    public float dropTime = 0.75f;
+    public float dropTime = 1000000f;
 
     public string gameOverString = "Game over!";
 
@@ -19,64 +20,7 @@ public class Group : MonoBehaviour
 
     public GameObject[] toDestroy;
 
-    void Start()
-    {
-        //    if (!checkForValidGridPosition())
-        //    {
-        //        Debug.Log(gameOverString);
-        //        Destroy(gameObject);
-        //    }
-        //}
-
-        //bool checkForValidGridPosition()
-        //{
-        //    foreach (Transform block in transform)
-        //    {
-        //        Vector2 vector = Grid.roundOff(block.position);
-        //        if (!Grid.inGrid(vector))
-        //        {
-        //            return false;
-        //        }
-
-        //        if (Grid.grid[(int)vector.x, (int)vector.y] != null && Grid.grid[(int)vector.x, (int)vector.y].parent != transform)
-        //        {
-        //            return false;
-        //        } 
-        //    }
-        //    return true;
-    }
-
-    void drawGrid()
-    {
-        //for (int y = 0; y < Grid.height; ++y)
-        //{
-        //    for (int x = 0; x < Grid.width; ++x)
-        //    {
-        //        if (Grid.grid[x, y] != null)
-        //        {
-        //            if (Grid.grid[x, y].parent == transform)
-        //            {
-        //                Grid.grid[x, y] = null;
-        //            }
-
-        //        }
-        //    }
-        //}
-
-        //foreach (Transform block in transform)
-        //{
-
-        //    foreach (GameObject erase in toDestroy)
-        //    {
-        //        Destroy(erase);
-        //    }
-        //    toDestroy = GameObject.FindGameObjectsWithTag("test");
-        //    Vector2 vector = Grid.roundOff(block.position);
-        //    Grid.grid[(int)vector.x, (int)vector.y] = block;
-        //    Instantiate(test, block.position, Quaternion.identity);
-
-        //}
-    }
+    private int posx, posy;
 
     private bool inGrid() //Checks for each child of a tetromino whether it is still in the grid
     {
@@ -87,13 +31,26 @@ public class Group : MonoBehaviour
             {
                 return false;
             }
+
+            //Formula for position (-1.85 -> 1.85, 4 -> -3.8)
+            //x: pos = (10/3.7)x + (10 - 18.5/3.7)
+            //y: pos = -(80/7.8)x + (20 - 80/7.8)
+            //TODO: FIX FORMULA OF Y
+            int posx = (int)((10 / 3.7) * pos.x + (10 - 18.5 / 3.7));
+            int posy = (int)((-80 / 7.8) * pos.y + (20 - 80 / 7.8));
+            Debug.Log(posx + ", " + posy);
+
+            if (GridClass.grid[posx, posy] != null && GridClass.grid[posx, posy].parent != transform)
+            {
+                return false;
+            }
         }
         return true;
     }
 
     private static bool inBorder(Vector2 posGroup) //Checks whether block is in grid
     {
-        return ((float)posGroup.x >= -3.6 && (float)posGroup.x <=3.6 && (float)posGroup.y >= -4.2);
+        return ((float)posGroup.x >= -1.85 && (float)posGroup.x <=1.85 && (float)posGroup.y >= -4.2);
     }
 
     // Update is called once per frame
@@ -107,6 +64,10 @@ public class Group : MonoBehaviour
             {
                 transform.position += new Vector3(blockSize, 0, 0);
             }
+            else
+            {
+                //updateGrid();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
@@ -114,6 +75,10 @@ public class Group : MonoBehaviour
             if (!inGrid())
             {
                 transform.position += new Vector3(-blockSize, 0, 0);
+            }
+            else
+            {
+                //updateGrid();
             }
         }
         else if (Input.GetKeyDown(KeyCode.O))
@@ -123,6 +88,10 @@ public class Group : MonoBehaviour
             {
                 transform.Rotate(0, 0, 90);
             }
+            else
+            {
+                //updateGrid();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
@@ -131,6 +100,10 @@ public class Group : MonoBehaviour
             {
                 transform.Rotate(0, 0, -90);
             }
+            else
+            {
+                //updateGrid();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastDrop >= dropTime)
         {
@@ -138,76 +111,39 @@ public class Group : MonoBehaviour
             if (!inGrid())
             {
                 transform.position += new Vector3(0, blockSize, 0);
+                enabled = false;
+                FindObjectOfType<Generator>().generateNextTetromino();
+            }
+            else
+            {
+                //updateGrid();
             }
             lastDrop = Time.time;
+            Debug.Log("Dropped!");
         }
-        //       if (Input.GetKeyDown(KeyCode.A))
-        //       {
-        //           transform.position += new Vector3(-blockSize, 0, 0);
-        //           if (checkForValidGridPosition())
-        //           {
-        //               drawGrid();
-        //           }
-        //           else
-        //           {
-        //               transform.position += new Vector3(blockSize, 0, 0);
-        //           }
-        //       }
-        //       else if (Input.GetKeyDown(KeyCode.D))
-        //       {
-        //           transform.position += new Vector3(blockSize, 0, 0);
-        //           if (checkForValidGridPosition())
-        //           {
-        //               drawGrid();
-        //           }
-        //           else
-        //           {
-        //               transform.position += new Vector3(-blockSize, 0, 0);
-        //           }
-        //       }
-        //       else if (Input.GetKeyDown(KeyCode.O))
-        //       {
-        //           transform.Rotate(0, 0, -90);
-        //           if (checkForValidGridPosition())
-        //           {
-        //               drawGrid();
-        //           }
-        //           else
-        //           {
-        //               transform.Rotate(0, 0, 90);
-        //           }
 
-        //       }
-        //       else if (Input.GetKeyDown(KeyCode.P))
-        //       {
-        //           transform.Rotate(0, 0, 90);
-        //           if (checkForValidGridPosition())
-        //           {
-        //               drawGrid();
-        //           }
-        //           else
-        //           {
-        //               transform.Rotate(0, 0, -90);
-        //           }
-        //       }
-        //       else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastDrop >= dropTime)
-        //       {
-        //           transform.position += new Vector3(0, -blockSize, 0);
-        //           if (checkForValidGridPosition())
-        //           {
-        //               drawGrid();
-        //           }
-        //           else
-        //           {
-        //               transform.position += new Vector3(0, blockSize, 0);
-        //               Grid.removeFullRows();
-        //               GameObject.FindObjectOfType<Generator>().generateNextTetromino();
-        //               enabled = false;
-        //           }
-        //           lastDrop = Time.time;
-        //       }
-        //}
+    }
 
+    private void updateGrid()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (GridClass.grid[j, i] != null && GridClass.grid[j, i].parent == transform)
+                {
+                    GridClass.grid[j, i] = null;
+                }
+            }
+        }
 
+        foreach (Transform child in transform)
+        {
+            Vector2 pos = child.position;
+            if (pos.y < 5)
+            {
+                GridClass.grid[posx, posy] = child;
+            }
+        }
     }
 }
