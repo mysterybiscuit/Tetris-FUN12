@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4361763713483710}
-  - component: {fileID: 114265839737773170}
+  - component: {fileID: 114430555317503552}
   m_Layer: 0
   m_Name: S
   m_TagString: Untagged
@@ -160,7 +160,7 @@ Transform:
   m_Father: {fileID: 4361763713483710}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114265839737773170
+--- !u!114 &114430555317503552
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -174,7 +174,8 @@ MonoBehaviour:
   blockSize: 0.65
   dropTime: 0.75
   gameOverString: Game over!
-  test: {fileID: 1167926814545832, guid: afb98c14692881143b15ec8a5504355e, type: 2}
+  test: {fileID: 0}
+  toDestroy: []
 --- !u!212 &212021916760446614
 SpriteRenderer:
   m_ObjectHideFlags: 1
