@@ -1,4 +1,5 @@
 ﻿using Mono.Data.SqliteClient;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -15,10 +16,12 @@ public class ScoreInsertManager : MonoBehaviour {
 
     private List<string> names;
 
-    private int id;
+    private int id, scoreId;
 
     public Text nameText;
     public Text scoreText;
+    public Text levelText;
+    public Text movesText;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +36,7 @@ public class ScoreInsertManager : MonoBehaviour {
     public void onButtonPress()
     {
         checkForPlayer();
+        SceneManager.LoadScene(2);
     }
 
     void checkForPlayer()
@@ -57,15 +61,16 @@ public class ScoreInsertManager : MonoBehaviour {
                     reader.Close();
                 }
             }
-            dbCon.Close();
         }
         if (names.Contains(currentName))
         {
             id = names.IndexOf(currentName);
+            insertScore();
         }
         else
         {
             insertNewName();
+            insertScore();
         }
     }
 
@@ -79,6 +84,42 @@ public class ScoreInsertManager : MonoBehaviour {
                 query = "INSERT INTO user (id, username, hash) VALUES (" + names.Count + ", " + currentName + ", " + hashName() + ");";
                 dbCmd.CommandText = query;
                 dbCmd.ExecuteScalar();
+            }
+            dbCon.Close();
+        }
+    }
+
+    void insertScore()
+    {
+        using (IDbConnection dbCon = new SqliteConnection(connectionString))
+        {
+            
+            dbCon.Open();
+            using (IDbCommand dbCmd = dbCon.CreateCommand())
+            {
+                query = "SELECT MAX(id) FROM highscore;";
+                dbCmd.CommandText = query;
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        scoreId = reader.GetInt32(0);
+                    }
+                    reader.Close();
+                }
+            }
+            using (IDbCommand dbCmd = dbCon.CreateCommand())
+            {
+                query = "INSERT INTO highscore (id, userid, score, level, moves, efficiency, time) VALUES" +
+                    scoreId +
+                    id +
+                    Convert.ToInt32(scoreText.text) +
+                    Convert.ToInt32(levelText.text) +
+                    Convert.ToInt32(movesText.text) +
+                    Convert.ToInt32(scoreText.text) / Convert.ToInt32(movesText) +
+                    DateTime.Now;
+                dbCmd.ExecuteScalar();
+
             }
             dbCon.Close();
         }

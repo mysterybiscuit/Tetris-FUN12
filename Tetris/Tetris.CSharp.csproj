@@ -350,7 +350,7 @@
     <Compile Include="Assets\ScoreInsertManager.cs" />
     <Compile Include="Assets\Scripts\DataBaseInterface.cs" />
     <Compile Include="Assets\Scripts\Generator.cs" />
-    <Compile Include="Assets\Scripts\Grid.cs" />
+    <Compile Include="Assets\Scripts\GridClass.cs" />
     <Compile Include="Assets\Scripts\Group.cs" />
   </ItemGroup>
   <ItemGroup>

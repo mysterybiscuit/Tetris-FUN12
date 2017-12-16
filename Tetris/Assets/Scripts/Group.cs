@@ -37,7 +37,7 @@ public class Group : MonoBehaviour
             //y: pos = -(80/7.8)x + (20 - 80/7.8)
             //TODO: FIX FORMULA OF Y
             int posx = (int)((10 / 3.7) * pos.x + (10 - 18.5 / 3.7));
-            int posy = (int)((-80 / 7.8) * pos.y + (20 - 80 / 7.8));
+            int posy = (int)((-7.8 / 80) * pos.y + (20 - 80 / 7.8));
             Debug.Log(posx + ", " + posy);
 
             if (GridClass.grid[posx, posy] != null && GridClass.grid[posx, posy].parent != transform)
