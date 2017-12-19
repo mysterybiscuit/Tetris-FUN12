@@ -134,13 +134,16 @@ public class ScoreInsertManager : MonoBehaviour {
             dbCon.Open();
             using (IDbCommand dbCmd = dbCon.CreateCommand())
             {
-                query = "INSERT INTO highscore (userid, score, level, moves, efficiency, time) VALUES (" +
+                int score = Convert.ToInt32(scoreText.text);
+                int level = Convert.ToInt32(levelText.text);
+                int moves = Convert.ToInt32(movesText.text);
+                double efficiency = score / moves;
+                query = "INSERT INTO highscore (userid, score, level, moves, efficiency) VALUES (" +
                         id + ", " +
-                        Convert.ToInt32(scoreText.text) + ", " +
-                        Convert.ToInt32(levelText.text) + ", " +
-                        Convert.ToInt32(movesText.text) + ", " +
-                        (double)(Convert.ToDouble(scoreText.text) / Convert.ToDouble(movesText)) + ", " +
-                        DateTime.Now + ");";
+                        score + ", " +
+                        level + ", " +
+                        moves + ", " +
+                        efficiency + ");";
                 dbCmd.CommandText = query;
                 dbCmd.ExecuteScalar();
 
@@ -161,5 +164,10 @@ public class ScoreInsertManager : MonoBehaviour {
             }
             return sb.ToString();
         }
+    }
+
+    void checkForUser()
+    {
+
     }
 }
