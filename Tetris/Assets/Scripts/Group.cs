@@ -103,7 +103,8 @@ public class Group : MonoBehaviour
             //x: pos = (10/3.7)x + (10 - 18.5/3.7)
             //y: pos = -(80/7.8)x + (20 - 80/7.8)
             posx = (int)((10 / 3.7) * pos.x + (10 - 18.5 / 3.7));
-            posy = (int)((-7.8 / 80) * pos.y + (20 - 80 / 7.8));
+            posy = (int)((-20 / 8.2) * pos.y + (20 - 80 / 8.2));
+            Debug.Log(posx + "," + posy);
 
             if (GridClass.grid[posx, posy] != null && GridClass.grid[posx, posy].parent != transform)
             {

@@ -16,7 +16,7 @@ public class ScoreInsertManager : MonoBehaviour {
 
     private List<string> names;
 
-    private int id, scoreId;
+    private int id = -1, scoreId;
 
     public Text nameText;
     public Text scoreText;
@@ -49,13 +49,16 @@ public class ScoreInsertManager : MonoBehaviour {
             dbCon.Open();
             using (IDbCommand dbCmd = dbCon.CreateCommand())
             {
-                query = "SELECT name FROM user;";
+                query = "SELECT id FROM user WHERE name = \"" + currentName + "\";";
                 dbCmd.CommandText = query;
                 using (IDataReader reader = dbCmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        names.Add(reader.GetString(0));
+                        if (reader.GetInt32(0).ToString().Length > 0) //Check if value is not null
+                        {
+                            id = reader.GetInt32(0);
+                        }
                     }
 
                     reader.Close();
